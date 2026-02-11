@@ -14,36 +14,7 @@ import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import * as XLSX from 'xlsx';
 
-interface FormState {
-  id: string;
-  type: string;
-  name: string;
-  description: string;
-  objectNaming: string;
-  propertyStore: string;
-  sensitive: boolean;
-  disableObjectCreation: boolean;
-  disableManualCreation: boolean;
-  allowConcurrentEditing: boolean;
-  notes: string;
-  // Essentials
-  inputPackage: string;
-  retentionPolicy: string;
-  icon: string;
-  createFolders: string;
-  exclusiveFolder: string;
-  listInfo: string;
-  handler: string;
-  // Procedures
-  insertProc: string;
-  deleteProc: string;
-  // Settings
-  searchScreen: string;
-  resultScreen: string;
-  treeAction: string;
-}
-
-const INITIAL_STATE: FormState = {
+const INITIAL_STATE = {
   id: '',
   type: 'Document',
   name: '',
@@ -69,20 +40,18 @@ const INITIAL_STATE: FormState = {
   treeAction: ''
 };
 
-
-
 export default function ConfigurationForm() {
   // Mock path for now to match user request "Home > Configuration > Document Categories"
   // In a real dynamic app this would come from the route
   const currentPath = ['Home', 'Configuration', 'Category'];
 
-  const [formData, setFormData] = useState<FormState>({
+  const [formData, setFormData] = useState({
     ...INITIAL_STATE,
     id: 'CAT-' + Math.floor(Math.random() * 10000)
   });
-  const [savedRecords, setSavedRecords] = useState<FormState[]>([]);
+  const [savedRecords, setSavedRecords] = useState([]);
   const [isExportOpen, setIsExportOpen] = useState(false);
-  const [status, setStatus] = useState<{ type: 'success' | 'info' | 'error', message: string } | null>(null);
+  const [status, setStatus] = useState(null);
 
   // Load from local storage on mount
   useEffect(() => {
@@ -96,11 +65,11 @@ export default function ConfigurationForm() {
     }
   }, []);
 
-  const handleChange = (field: keyof FormState, value: any) => {
+  const handleChange = (field, value) => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
-  const showStatus = (type: 'success' | 'info' | 'error', message: string) => {
+  const showStatus = (type, message) => {
     setStatus({ type, message });
     setTimeout(() => setStatus(null), 3000);
   };
@@ -140,7 +109,7 @@ export default function ConfigurationForm() {
   };
 
   const getExportData = () => {
-    const labels: Record<string, string> = {
+    const labels = {
       id: "Category ID",
       name: "Category Name",
       type: "Resource Type",
@@ -175,7 +144,7 @@ export default function ConfigurationForm() {
     return rows;
   };
 
-  const handleExport = (format: string) => {
+  const handleExport = (format) => {
     const data = getExportData();
     const fileName = `Category_Report_${formData.id}`;
 
@@ -532,12 +501,12 @@ export default function ConfigurationForm() {
   );
 }
 
-function PrintLayout({ formData, currentPath }: { formData: FormState, currentPath: string[] }) {
-  const formatDate = (date: Date) => {
+function PrintLayout({ formData, currentPath }) {
+  const formatDate = (date) => {
     return date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
   };
 
-  const renderValue = (val: any) => {
+  const renderValue = (val) => {
     if (typeof val === 'boolean') return val ? 'YES' : 'NO';
     if (val === '' || val === null || val === undefined) return <span className="text-gray-400">N/A</span>;
     return val;
@@ -619,7 +588,7 @@ function PrintLayout({ formData, currentPath }: { formData: FormState, currentPa
   );
 }
 
-function PrintSection({ title, children, fullWidth }: any) {
+function PrintSection({ title, children, fullWidth }) {
   return (
     <div className={cn(fullWidth ? "col-span-2" : "col-span-1")}>
       <h3 className="text-xs font-black text-indigo-900 border-b border-indigo-100 pb-2 mb-4 tracking-tighter uppercase">{title}</h3>
@@ -628,7 +597,7 @@ function PrintSection({ title, children, fullWidth }: any) {
   );
 }
 
-function PrintField({ label, value }: { label: string, value: any }) {
+function PrintField({ label, value }) {
   return (
     <div className="flex justify-between items-baseline border-b border-gray-50 pb-1">
       <span className="text-[10px] font-black text-gray-400 uppercase tracking-tighter">{label}</span>
@@ -638,7 +607,7 @@ function PrintField({ label, value }: { label: string, value: any }) {
 }
 
 
-function ToolbarButton({ icon, label, onClick, className, active }: any) {
+function ToolbarButton({ icon, label, onClick, className, active }) {
   return (
     <button 
       onClick={onClick}
@@ -654,7 +623,7 @@ function ToolbarButton({ icon, label, onClick, className, active }: any) {
   );
 }
 
-function ExportItem({ icon, label, onClick }: any) {
+function ExportItem({ icon, label, onClick }) {
   return (
     <button 
       onClick={onClick}
@@ -666,7 +635,7 @@ function ExportItem({ icon, label, onClick }: any) {
   );
 }
 
-function ScreenCard({ title, subtitle }: { title: string, subtitle: string }) {
+function ScreenCard({ title, subtitle }) {
   return (
     <div className="p-4 bg-white rounded-xl border border-gray-100 shadow-sm flex flex-col gap-3 group hover:border-indigo-200 transition-colors cursor-default">
        <div className="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center text-gray-400 group-hover:bg-indigo-600 group-hover:text-white transition-all">
@@ -680,7 +649,7 @@ function ScreenCard({ title, subtitle }: { title: string, subtitle: string }) {
   );
 }
 
-function FormGroup({ label, children, dark }: { label: string, children: React.ReactNode, dark?: boolean }) {
+function FormGroup({ label, children, dark }) {
   return (
     <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-8">
       <label className={cn(

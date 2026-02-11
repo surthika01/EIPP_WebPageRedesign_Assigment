@@ -1,15 +1,8 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
-import { useState, ReactNode } from 'react';
+import { useState } from 'react';
 import { cn } from '../../utils/cn';
 
-interface SectionProps {
-  title: string;
-  children: ReactNode;
-  defaultOpen?: boolean;
-  className?: string;
-}
-
-export function Section({ title, children, defaultOpen = false, className }: SectionProps) {
+export function Section({ title, children, defaultOpen = false, className }) {
   const [isOpen, setIsOpen] = useState(defaultOpen);
 
   return (

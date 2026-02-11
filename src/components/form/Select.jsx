@@ -2,14 +2,7 @@ import { forwardRef } from 'react';
 import { cn } from '../../utils/cn';
 import { Calendar } from 'lucide-react';
 
-interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
-  label: string;
-  options: { label: string; value: string }[];
-  error?: string;
-  showIcon?: boolean; 
-}
-
-export const Select = forwardRef<HTMLSelectElement, SelectProps>(({ className, label, options, error, showIcon = false, ...props }, ref) => {
+export const Select = forwardRef(({ className, label, options, error, showIcon = false, ...props }, ref) => {
   return (
     <div className="flex flex-col gap-1.5 w-full">
       <label className="text-sm font-medium text-gray-700">

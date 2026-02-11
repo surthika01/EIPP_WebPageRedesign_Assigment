@@ -1,10 +1,4 @@
-export type NavNode = {
-  id: string;
-  label: string;
-  children?: NavNode[];
-};
-
-export const NAV_STRUCTURE: NavNode[] = [
+export const NAV_STRUCTURE = [
   {
     id: 'home',
     label: 'Home',

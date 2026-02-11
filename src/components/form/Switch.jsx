@@ -1,11 +1,6 @@
 import * as React from 'react';
 
-
-interface SwitchProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  label: string;
-}
-
-export const Switch = React.forwardRef<HTMLInputElement, SwitchProps>(({ className, label, ...props }, ref) => {
+export const Switch = React.forwardRef(({ className, label, ...props }, ref) => {
   return (
     <label className="flex items-center gap-3 cursor-pointer group p-2 rounded-lg hover:bg-gray-50 transition-colors border border-transparent hover:border-gray-200">
       <div className="relative inline-flex items-center">

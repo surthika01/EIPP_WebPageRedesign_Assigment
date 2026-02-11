@@ -17,15 +17,15 @@ export function Sidebar() {
   const location = useLocation();
 
   // Auto-expand based on route if needed
-  const [expandedItems, setExpandedItems] = useState<string[]>(['configuration', 'doc-categories', 'charts']);
+  const [expandedItems, setExpandedItems] = useState(['configuration', 'doc-categories', 'charts']);
 
-  const toggleExpand = (id: string) => {
+  const toggleExpand = (id) => {
     setExpandedItems(prev => 
       prev.includes(id) ? prev.filter(item => item !== id) : [...prev, id]
     );
   };
 
-  const isActive = (path: string) => location.pathname === path;
+  const isActive = (path) => location.pathname === path;
 
   return (
     <>
@@ -100,23 +100,9 @@ export function Sidebar() {
   );
 }
 
-interface NavItemProps {
-  icon?: React.ReactNode;
-  label: string;
-  to?: string;
-  isOpen: boolean;
-  active?: boolean;
-  hasSubmenu?: boolean;
-  expanded?: boolean;
-  onToggle?: () => void;
-  isSubitem?: boolean;
-  level?: number;
-  children?: React.ReactNode;
-}
-
 function NavItem({ 
   icon, label, to, isOpen, active, hasSubmenu, expanded, onToggle, isSubitem, level = 0, children 
-}: NavItemProps) {
+}) {
   const content = (
     <div 
       className={cn(
